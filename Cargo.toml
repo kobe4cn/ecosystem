@@ -8,7 +8,27 @@ license = "MIT"
 
 [dependencies]
 anyhow = "1.0.89"
-rand = "0.8.5"
+thiserror = "1.0.62"
+
+
+opentelemetry_sdk = { version = "0.25.0", features = ["rt-tokio"] }
+
+
+[dev-dependencies]
 serde = { version = "1.0.210", features = ["derive"] }
+axum = { version = "0.7.6", features = ["http2", "query", "tracing"] }
+tokio = { version = "1.38.0", features = [
+    "rt",
+    "rt-multi-thread",
+    "net",
+    "macros",
+    "io-util",
+] }
+
+tracing = "0.1.40"
+tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
 serde_json = "1.0.128"
-thiserror = "1.0.63"
+tracing-appender = "0.2.3"
+opentelemetry-otlp = { version = "0.25.0", features = ["tonic"] }
+opentelemetry = "0.25.0"
+tracing-opentelemetry = "0.26.0"
