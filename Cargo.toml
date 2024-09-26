@@ -34,3 +34,4 @@ opentelemetry-otlp = { version = "0.25.0", features = ["tonic"] }
 opentelemetry = "0.25.0"
 tracing-opentelemetry = "0.26.0"
 derive_builder = "0.20.1"
+derive_more = { version = "1.0.0", features = ["full"] }
