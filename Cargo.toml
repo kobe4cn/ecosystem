@@ -12,8 +12,11 @@ thiserror = "1.0.62"
 
 
 opentelemetry_sdk = { version = "0.25.0", features = ["rt-tokio"] }
-chrono = "0.4.38"
+chrono = { version = "0.4.38", features = ["serde"] }
 serde = { version = "1.0.210", features = ["derive"] }
+base64 = "0.22.1"
+chacha20poly1305 = "0.10.1"
+serde_with = "3.9.0"
 
 
 [dev-dependencies]
@@ -37,3 +40,4 @@ tracing-opentelemetry = "0.26.0"
 derive_builder = "0.20.1"
 derive_more = { version = "1.0.0", features = ["full"] }
 strum = { version = "0.26.3", features = ["derive"] }
+http = "1.1.0"
