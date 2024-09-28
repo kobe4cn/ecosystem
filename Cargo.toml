@@ -13,6 +13,7 @@ thiserror = "1.0.62"
 
 opentelemetry_sdk = { version = "0.25.0", features = ["rt-tokio"] }
 chrono = "0.4.38"
+serde = { version = "1.0.210", features = ["derive"] }
 
 
 [dev-dependencies]
