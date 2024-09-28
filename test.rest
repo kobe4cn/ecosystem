@@ -1,0 +1,11 @@
+### index handler
+GET http://localhost:8080/
+
+### update handler
+PATCH http://localhost:8080/
+Content-Type: application/json
+
+{
+    "age": 20,
+    "skill": ["Rust", "Go","Node.js"]
+}
