@@ -4,7 +4,7 @@ use anyhow::Result;
 use axum::{extract::State, routing::patch, Json};
 use serde::{Deserialize, Serialize};
 use tokio::net::TcpListener;
-use tracing::level_filters::LevelFilter;
+use tracing::{info, level_filters::LevelFilter};
 use tracing_subscriber::{
     fmt::{format::FmtSpan, Layer},
     layer::SubscriberExt,
@@ -41,7 +41,8 @@ async fn main() -> Result<()> {
     };
     let user = Arc::new(Mutex::new(user));
 
-    let addr = "0.0.0.0:8080";
+    let addr = "0.0.0.0:8081";
+    info!("listening on {}", addr);
     let app = axum::Router::new()
         .route("/", axum::routing::get(index_handler))
         .route("/", patch(update_handler))
