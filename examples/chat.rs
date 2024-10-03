@@ -14,6 +14,8 @@ use tracing_subscriber::{fmt::Layer, layer::SubscriberExt, util::SubscriberInitE
 const MAX_MESSAGE_SIZE: usize = 128;
 #[tokio::main]
 async fn main() -> Result<()> {
+    // console_subscriber::init(); can not work with tracing_subscriber, so use the following code to replace it
+    //using consoleLayer builder spawn to make a layer and register with tracing_subscriber
     let console_layer = console_subscriber::ConsoleLayer::builder().spawn();
 
     let layer = Layer::new().pretty().with_filter(LevelFilter::INFO);
