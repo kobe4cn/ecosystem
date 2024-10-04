@@ -9,3 +9,15 @@ Content-Type: application/json
     "age": 20,
     "skill": ["Rust", "Go","Node.js"]
 }
+
+
+### shorten handler
+POST http://localhost:9876/
+Content-Type: application/json
+
+{
+    "url": "https://www.google.com"
+}
+
+### redirect handler
+GET http://localhost:9876/psbYR-
