@@ -28,6 +28,7 @@ struct ShortenRequest {
     url: String,
 }
 #[derive(Debug, FromRow)]
+
 struct UrlRecord {
     #[sqlx(default)]
     id: String,
