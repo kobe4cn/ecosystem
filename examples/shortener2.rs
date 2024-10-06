@@ -101,15 +101,20 @@ impl DbState {
     }
     //获取短链接
     async fn get_url(&self, id: &str) -> Result<String, MyError> {
-        let ret: ShortUrl = sqlx::query_as("SELECT url FROM short_urls WHERE id=$1")
-            .bind(id)
-            .fetch_one(&self.db)
-            .await?;
-        //短链接不存在
-        if ret.url.is_empty() {
-            return Err(MyError::UrlNotFound(format!("URL not found: {}", id)));
+        let ret: Result<ShortUrl, sqlx::Error> =
+            sqlx::query_as("SELECT url FROM short_urls WHERE id=$1")
+                .bind(id)
+                .fetch_one(&self.db)
+                .await;
+        match ret {
+            Ok(ret) => {
+                if ret.url.is_empty() {
+                    return Err(MyError::UrlNotFound(format!("URL not found1: {}", id)));
+                }
+                Ok(ret.url)
+            }
+            Err(_e) => Err(MyError::UrlNotFound(id.to_string())),
         }
-        Ok(ret.url)
     }
 }
 
@@ -147,10 +152,10 @@ async fn main() -> Result<()> {
 async fn shorten(
     State(state): State<Arc<DbState>>,
     Json(payload): Json<UrlRequest>,
-) -> Result<impl IntoResponse, StatusCode> {
+) -> Result<impl IntoResponse, (StatusCode, String)> {
     let id = state.shorten(&payload.url).await.map_err(|e| {
         warn!("{}", e);
-        StatusCode::UNPROCESSABLE_ENTITY
+        (StatusCode::UNPROCESSABLE_ENTITY, format!("{}", e))
     })?;
     let body = Json(UrlResponse {
         url: format!("http://localhost:9876/{}", id),
@@ -162,10 +167,10 @@ async fn shorten(
 async fn redirect(
     Path(id): Path<String>,
     State(state): State<Arc<DbState>>,
-) -> Result<impl IntoResponse, StatusCode> {
+) -> Result<impl IntoResponse, (StatusCode, String)> {
     let url = state.get_url(&id).await.map_err(|e| {
         warn!("{}", e);
-        StatusCode::NOT_FOUND
+        (StatusCode::NOT_FOUND, format!("{}", e))
     })?;
     //返回302状态码，重定向，返回是一个tuple，包含状态码和body，实现了IntoResponse
     //headermap，包含Location头，值为url
